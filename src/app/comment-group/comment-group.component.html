@@ -1,0 +1,6 @@
+<app-comment-card [username]="comment.username" [image]="comment.image" [time]="comment.time" [text]="comment.text"
+  [score]="comment.score"></app-comment-card>
+<div class="replies d-flex flex-column">
+  <app-comment-card *ngFor="let reply of comment.replies" [username]="reply.username" [image]="reply.image"
+    [time]="reply.time" [replyUser]="reply.replyUser" [text]="reply.text" [score]="reply.score"></app-comment-card>
+</div>
