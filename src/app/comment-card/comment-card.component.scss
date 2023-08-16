@@ -1,0 +1,67 @@
+.comment-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+header {
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: min(100%, 2rem);
+  aspect-ratio: 1/1;
+}
+
+.score-control {
+  padding: 0.5rem;
+  background-color: lightgrey;
+  gap: 0.5rem;
+  line-height: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  button {
+    aspect-ratio: 1/1;
+  }
+}
+
+.edit-comment {
+  display: flex;
+  gap: 1rem;
+}
+
+.my-btn {
+  background-color: transparent;
+  border: none;
+  outline: transparent;
+  padding: 0;
+}
+.user {
+  line-height: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+  header {
+    padding-left: 3rem;
+  }
+  .text {
+    padding-left: 3rem;
+    margin-bottom: 0 !important;
+  }
+  .score-control {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    flex-direction: column;
+  }
+  .reply {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  .edit-comment {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
