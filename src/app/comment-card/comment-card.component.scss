@@ -8,11 +8,6 @@ header {
   gap: 0.5rem;
 }
 
-.avatar {
-  width: min(100%, 2rem);
-  aspect-ratio: 1/1;
-}
-
 .score-control {
   padding: 0.5rem;
   background-color: lightgrey;
@@ -41,13 +36,15 @@ header {
 }
 
 @media screen and (min-width: 600px) {
-  header {
+  header,
+  form {
     padding-left: 3rem;
   }
   .text {
     padding-left: 3rem;
     margin-bottom: 0 !important;
   }
+
   .score-control {
     position: absolute;
     top: 1rem;

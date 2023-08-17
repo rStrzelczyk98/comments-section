@@ -1,23 +1,31 @@
-<div class="comment-card position-relative">
+<div class="comment-card position-relative" *ngIf="comment$ | async as comment">
   <header class="d-flex align-items-center">
-    <img class="avatar img-fluid rounded-circle" src="{{image}}" alt="">
-    <p class="m-0 fw-bolder">{{username}}</p>
-    <p *ngIf="allowEdit" class="m-0 bg-primary text-white rounded-1 px-2 pb-1 pt-0 user">you</p>
-    <p class="m-0 time">{{time | date: 'mediumDate'}}</p>
+    <img class="avatar img-fluid rounded-circle" src="{{comment.image}}" alt="">
+    <p class="m-0 fw-bolder">{{comment.username}}</p>
+    <p *ngIf="(user.name === comment.username);t" class="m-0 bg-primary text-white rounded-1 px-2 pb-1 pt-0 user">you
+    </p>
+    <p class="m-0 time">{{comment.time | date: 'mediumDate'}}</p>
   </header>
-  <p class="my-3 text"><span class="text-primary fw-bolder">{{replyUser}}</span> {{text}}</p>
+  <p *ngIf="!editMode" class="my-3 text"><span class="text-primary fw-bolder">{{comment.replyUser}}</span>
+    {{comment.text}}</p>
+  <form *ngIf="editMode" [formGroup]="commentEdit" (ngSubmit)="updateComment()">
+    <textarea class="mt-3 w-100" formControlName="comment" name="" id="" rows="5"></textarea>
+    <button class="btn btn-primary text-uppercase" type="submit">update</button>
+  </form>
   <div class="d-flex justify-content-between align-items-center">
     <div class="score-control d-flex justify-content-between align-items-center">
       <button class="my-btn"><i class="bi bi-plus"></i></button>
-      <p class="m-0 text-center">{{score}}</p>
+      <p class="m-0 text-center">{{comment.score}}</p>
       <button class="my-btn"><i class="bi bi-dash"></i></button>
     </div>
-    <button *ngIf="!allowEdit;else edit" class="my-btn reply fw-bolder text-primary"><i
-        class="bi bi-arrow-90deg-left px-1"></i>Reply</button>
+    <button *ngIf="!(user.name === comment.username);else edit" class="my-btn reply fw-bolder text-primary"
+      (click)="reply(comment.username)"><i class="bi bi-arrow-90deg-left px-1"></i>Reply</button>
     <ng-template #edit>
       <div class="edit-comment">
-        <button class="my-btn fw-bolder text-danger"><i class="bi bi-trash px-1"></i>Delete</button>
-        <button class="my-btn fw-bolder text-primary"><i class="bi bi-pen px-1"></i>Edit</button>
+        <button class="my-btn fw-bolder text-danger" (click)="deleteComment()"><i
+            class="bi bi-trash px-1"></i>Delete</button>
+        <button class="my-btn fw-bolder text-primary" (click)="editComment()"><i
+            class="bi bi-pen px-1"></i>Edit</button>
       </div>
     </ng-template>
   </div>

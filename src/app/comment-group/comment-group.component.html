@@ -1,6 +1,9 @@
-<app-comment-card [username]="comment.username" [image]="comment.image" [time]="comment.time" [text]="comment.text"
-  [score]="comment.score"></app-comment-card>
-<div class="replies d-flex flex-column">
-  <app-comment-card *ngFor="let reply of comment.replies" [username]="reply.username" [image]="reply.image"
-    [time]="reply.time" [replyUser]="reply.replyUser" [text]="reply.text" [score]="reply.score"></app-comment-card>
+<div class="mb-3">
+  <app-comment-card [index]="mainIndex" (replyEvent)="onReply($event)"></app-comment-card>
+  <div class="replies d-flex flex-column">
+    <app-comment-card (replyEvent)="onReply($event)" *ngFor="let reply of comment.replies; let i = index"
+      [index]="mainIndex" [replyIndex]="i"></app-comment-card>
+    <app-comment-input (displayInput)="onHideInput($event)" *ngIf="showInput" [index]="mainIndex" [reply]="true"
+      [replyUser]="replyUser"></app-comment-input>
+  </div>
 </div>

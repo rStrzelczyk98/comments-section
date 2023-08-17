@@ -1,3 +1,5 @@
 <div class="p-3">
-  <app-comment-group *ngFor="let comment of comments" [comment]="comment"></app-comment-group>
+  <app-comment-group *ngFor="let comment of comments$ | async; let i = index" [comment]="comment"
+    [mainIndex]="i"></app-comment-group>
+  <app-comment-input [reply]="false" [index]="-1"></app-comment-input>
 </div>
