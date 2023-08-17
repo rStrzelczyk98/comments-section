@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   title = 'comments-section';
   comments$!: Observable<Comment[]>;
+  showModal$!: Observable<boolean>;
   constructor(private cs: CommentService) {
     this.comments$ = this.cs.getComments();
+    this.showModal$ = this.cs.getModal();
   }
 }
