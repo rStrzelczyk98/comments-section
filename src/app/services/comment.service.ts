@@ -1,4 +1,6 @@
+import { CompilerConfig } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 export type Comment = {
   username: string;
@@ -10,11 +12,19 @@ export type Comment = {
   replies?: Comment[];
 };
 
+export type User = {
+  name: string;
+  img: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class CommentService {
-  private user: string = 'rStrzelczyk';
+  private user: User = {
+    name: 'rStrzelczyk',
+    img: 'https://ui-avatars.com/api/?name=rStrzelczyk',
+  };
   private comments: Comment[] = [
     {
       username: 'ellen',
@@ -31,7 +41,6 @@ export class CommentService {
           text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur ut nemo perferendis totam voluptatibus laboriosam omnis consequatur.',
           score: 7,
         },
-
         {
           username: 'rStrzelczyk',
           image: 'https://ui-avatars.com/api/?name=rStrzelczyk',
@@ -64,10 +73,59 @@ export class CommentService {
   constructor() {}
 
   getComments() {
-    return this.comments;
+    return of(this.comments);
   }
 
-  getUser() {
+  getUser(): User {
     return this.user;
+  }
+
+  addComment(reply: boolean, index: number, text: string, replyUser: string) {
+    if (reply) {
+      this.comments[index].replies?.push({
+        username: this.user.name,
+        image: this.user.img,
+        time: Date.now(),
+        replyUser: '@' + replyUser,
+        text,
+        score: 0,
+      });
+    } else {
+      this.comments.push({
+        username: this.user.name,
+        image: this.user.img,
+        time: Date.now(),
+        text,
+        score: 0,
+        replies: [],
+      });
+    }
+  }
+
+  editComment(index: number, replyIndex: number, comment: string) {
+    if (replyIndex !== undefined) {
+      this.comments[index].replies!.at(replyIndex)!.text = comment;
+    } else {
+      this.comments[index].text = comment;
+    }
+  }
+
+  getComment(index: number, replyIndex?: number) {
+    if (replyIndex !== undefined) {
+      return of(
+        this.comments[index].replies?.at(replyIndex)
+      ) as Observable<Comment>;
+    } else {
+      return of(this.comments[index]);
+    }
+  }
+
+  deleteComment(index: number, replyIndex?: number) {
+    const guard = confirm('Do you want to delete this comment?');
+    if (guard) {
+      replyIndex !== undefined
+        ? this.comments[index].replies?.splice(replyIndex, 1)
+        : this.comments.splice(index, 1);
+    }
   }
 }

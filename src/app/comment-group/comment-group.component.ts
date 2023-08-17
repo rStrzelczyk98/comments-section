@@ -8,4 +8,17 @@ import { Comment } from '../services/comment.service';
 })
 export class CommentGroupComponent {
   @Input() comment!: Comment;
+  @Input() mainIndex!: number;
+
+  replyUser!: string;
+  showInput: boolean = false;
+
+  onReply($event: { index: number; user: string }) {
+    $event.index === this.mainIndex;
+    this.replyUser = $event.user;
+    this.showInput = true;
+  }
+  onHideInput($event: boolean) {
+    this.showInput = $event;
+  }
 }

@@ -1,5 +1,14 @@
-import { AfterViewInit, Component, Input, inject } from '@angular/core';
-import { CommentService } from '../services/comment.service';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+} from '@angular/core';
+import { Comment, CommentService, User } from '../services/comment.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-comment-card',
@@ -7,16 +16,55 @@ import { CommentService } from '../services/comment.service';
   styleUrls: ['./comment-card.component.scss'],
 })
 export class CommentCardComponent implements AfterViewInit {
-  @Input() username!: string;
-  @Input() image!: string;
-  @Input() replyUser?: string;
-  @Input() time!: number;
-  @Input() text!: string;
-  @Input() score!: number;
-  allowEdit: boolean = false;
-  private cs: CommentService = inject(CommentService);
+  @Input() index!: number;
+  @Input() replyIndex!: number;
+  @Output() replyEvent = new EventEmitter<{ index: number; user: string }>();
+
+  comment$!: Observable<Comment>;
+  user!: User;
+  editMode: boolean = false;
+  commentEdit: FormGroup;
+
+  constructor(private fb: FormBuilder, private cs: CommentService) {
+    this.commentEdit = this.fb.group({
+      comment: ['', Validators.required],
+    });
+    this.user = this.cs.getUser();
+  }
 
   ngAfterViewInit(): void {
-    setTimeout(() => (this.allowEdit = this.username === this.cs.getUser()));
+    setTimeout(
+      () => (this.comment$ = this.cs.getComment(this.index, this.replyIndex))
+    );
+    setTimeout(() => {
+      this.comment$
+        .pipe(
+          tap((comment) => {
+            this.commentEdit.patchValue({ comment: comment.text });
+          }),
+          take(1)
+        )
+        .subscribe();
+    });
+  }
+
+  reply(replyUser: string = '') {
+    this.replyEvent.emit({ index: this.index, user: replyUser });
+  }
+
+  updateComment() {
+    this.cs.editComment(
+      this.index,
+      this.replyIndex,
+      this.commentEdit.value.comment
+    );
+    this.editMode = false;
+  }
+
+  editComment() {
+    this.editMode = true;
+  }
+  deleteComment() {
+    this.cs.deleteComment(this.index, this.replyIndex);
   }
 }

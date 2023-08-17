@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Comment, CommentService } from './services/comment.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,8 @@ import { Comment, CommentService } from './services/comment.service';
 })
 export class AppComponent {
   title = 'comments-section';
-  comments!: Comment[];
+  comments$!: Observable<Comment[]>;
   constructor(private cs: CommentService) {
-    this.comments = this.cs.getComments();
+    this.comments$ = this.cs.getComments();
   }
 }

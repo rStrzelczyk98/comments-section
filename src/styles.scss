@@ -2,3 +2,7 @@
 body {
   background-color: lightblue;
 }
+.avatar {
+  width: min(100%, 2rem);
+  aspect-ratio: 1/1;
+}

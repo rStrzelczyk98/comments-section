@@ -1,0 +1,6 @@
+<form class="p-3 bg-white rounded-2 d-flex" [formGroup]="cf" (ngSubmit)="send()">
+  <img class="align-self-start avatar img-fluid rounded-circle" src="{{imgURL}}" alt="">
+  <textarea class="flex-grow-1" formControlName="comment" type="text" name="" id="" rows="3"
+    placeholder="Add a comment..."></textarea>
+  <button class="align-self-start btn btn-primary text-uppercase" [disabled]="cf.invalid">send</button>
+</form>
