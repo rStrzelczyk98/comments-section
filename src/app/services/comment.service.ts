@@ -1,6 +1,5 @@
-import { CompilerConfig } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 export type Comment = {
   username: string;
@@ -21,6 +20,8 @@ export type User = {
   providedIn: 'root',
 })
 export class CommentService {
+  private modal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private selectedComment!: { index: number; replyIndex?: number };
   private user: User = {
     name: 'rStrzelczyk',
     img: 'https://ui-avatars.com/api/?name=rStrzelczyk',
@@ -29,7 +30,7 @@ export class CommentService {
     {
       username: 'ellen',
       image: 'https://ui-avatars.com/api/?name=ellen',
-      time: Date.now() - 10 ** 8,
+      time: Date.now(),
       text: 'Obcaecati excepturi rerum voluptates. Amet, quod perferendis!',
       score: 5,
       replies: [
@@ -120,12 +121,26 @@ export class CommentService {
     }
   }
 
-  deleteComment(index: number, replyIndex?: number) {
-    const guard = confirm('Do you want to delete this comment?');
-    if (guard) {
-      replyIndex !== undefined
-        ? this.comments[index].replies?.splice(replyIndex, 1)
-        : this.comments.splice(index, 1);
-    }
+  private deleteComment() {
+    this.selectedComment.replyIndex !== undefined
+      ? this.comments[this.selectedComment.index].replies?.splice(
+          this.selectedComment.replyIndex,
+          1
+        )
+      : this.comments.splice(this.selectedComment.index, 1);
+  }
+
+  getModal() {
+    return this.modal.asObservable();
+  }
+
+  openModal(index: number, replyIndex?: number) {
+    this.selectedComment = { index, replyIndex };
+    this.modal.next(true);
+  }
+
+  closeModal(del: boolean = false) {
+    if (del) this.deleteComment();
+    this.modal.next(false);
   }
 }

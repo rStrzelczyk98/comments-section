@@ -6,6 +6,7 @@ import { CommentCardComponent } from './comment-card/comment-card.component';
 import { CommentGroupComponent } from './comment-group/comment-group.component';
 import { CommentInputComponent } from './comment-input/comment-input.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommentCardComponent,
     CommentGroupComponent,
     CommentInputComponent,
+    AlertComponent,
   ],
   imports: [BrowserModule, ReactiveFormsModule],
   providers: [],

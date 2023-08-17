@@ -3,3 +3,4 @@
     [mainIndex]="i"></app-comment-group>
   <app-comment-input [reply]="false" [index]="-1"></app-comment-input>
 </div>
+<app-alert *ngIf="showModal$ | async"></app-alert>

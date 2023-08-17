@@ -65,6 +65,6 @@ export class CommentCardComponent implements AfterViewInit {
     this.editMode = true;
   }
   deleteComment() {
-    this.cs.deleteComment(this.index, this.replyIndex);
+    this.cs.openModal(this.index, this.replyIndex);
   }
 }
