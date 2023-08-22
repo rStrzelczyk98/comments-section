@@ -1,6 +1,6 @@
 <div class="mb-3">
   <app-comment-card [index]="mainIndex" (replyEvent)="onReply($event)"></app-comment-card>
-  <div class="replies d-flex flex-column">
+  <div class="replies d-flex flex-column grey-border">
     <app-comment-card (replyEvent)="onReply($event)" *ngFor="let reply of comment.replies; let i = index"
       [index]="mainIndex" [replyIndex]="i"></app-comment-card>
     <app-comment-input (displayInput)="onHideInput($event)" *ngIf="showInput" [index]="mainIndex" [reply]="true"

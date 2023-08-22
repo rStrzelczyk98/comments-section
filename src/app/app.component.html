@@ -1,4 +1,4 @@
-<div class="p-3">
+<div class="p-3 comments mx-auto">
   <app-comment-group *ngFor="let comment of comments$ | async; let i = index" [comment]="comment"
     [mainIndex]="i"></app-comment-group>
   <app-comment-input [reply]="false" [index]="-1"></app-comment-input>
